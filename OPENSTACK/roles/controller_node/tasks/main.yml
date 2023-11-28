@@ -1,7 +1,7 @@
 #controllernode
 ---
 - name: Install and configure NTP on CentOS
-  become: yes
+  become: true
   tasks:
     - name: Install NTP
       package:
