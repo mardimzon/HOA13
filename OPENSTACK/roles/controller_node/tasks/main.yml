@@ -1,3 +1,4 @@
+#controllernode
 
     - name: Install NTP
       yum:
