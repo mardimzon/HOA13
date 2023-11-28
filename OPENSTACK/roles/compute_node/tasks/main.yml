@@ -93,17 +93,17 @@
         src: memcached.conf.j2
         dest: /etc/memcached.conf
       notify: Restart Memcached
+
+     - name: Restart Etcd
+      service:
+        name: etcd
+        state: restarted
       
     - name: Install Etcd
       apt:
         name: etcd
         state: present  
-    
-    - name: Restart Etcd
-      service:
-        name: etcd
-        state: restarted
-    
+        
     - name: Configure Etcd
       template:
         src: etcd.conf.j2
