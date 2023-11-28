@@ -15,9 +15,14 @@
     package:
       upgrade: dist
       update_cache: yes
-    
+      
 - hosts: compute_node 
   become: true
   roles:
     - compute_node
+    
+- hosts: controller_node
+  become: true
+  roles:
+    - controller_node
 
