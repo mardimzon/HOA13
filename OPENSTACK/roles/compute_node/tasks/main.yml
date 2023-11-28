@@ -1,9 +1,5 @@
 #computenode
----
-- name: Configure NTP
-  hosts: all
-  tasks:
-    - name: Install NTP
+    - name: Install and setup NTP
       apt:
         name: ntp
         state: present
@@ -13,16 +9,13 @@
         path: /etc/ntp.conf
         line: "server your-ntp-server"
       notify: Restart NTP
-
-  handlers:
+      
     - name: Restart NTP
       service:
         name: ntp
         state: restarted
-
-- name: Install OpenStack packages
-  tasks:
-    - name: Install required packages
+        
+    - name: Install OpenStack required packages
       apt:
         name: "{{ item }}"
         state: present
@@ -42,9 +35,7 @@
     - name: Update apt package cache
       apt:
         update_cache: yes
-
-- name: Install and configure MariaDB for OpenStack
-  tasks:
+        
     - name: Install MariaDB server
       apt:
         name: mariadb-server
@@ -66,12 +57,58 @@
         src: my.cnf.j2
         dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
       notify: Restart MariaDB
-
-  handlers:
+      
     - name: Restart MariaDB
       service:
         name: mariadb
         state: restarted
+        
+    - name: Install RabbitMQ server
+      apt:
+        name: rabbitmq-server
+        state: present
+        
+    - name: Enable and start RabbitMQ service
+      service:
+        name: rabbitmq-server
+        enabled: yes
+        state: started
+        
+    - name: Install Memcached
+      apt:
+        name: memcached
+        state: present
+
+    - name: Configure Memcached
+      template:
+        src: memcached.conf.j2
+        dest: /etc/memcached.conf
+      notify: Restart Memcached
+      
+    - name: Restart Memcached
+      service:
+        name: memcached
+        state: restarted
+        
+    - name: Install Etcd
+      apt:
+        name: etcd
+        state: present
+
+    - name: Configure Etcd
+      template:
+        src: etcd.conf.j2
+        dest: /etc/default/etcd
+      notify: Restart Etcd
+
+  handlers:
+    - name: Restart Etcd
+      service:
+        name: etcd
+        state: restarted
+
+
+
 
         
   
