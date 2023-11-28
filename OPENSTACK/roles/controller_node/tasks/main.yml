@@ -1,8 +1,4 @@
----
-- name: Install and configure NTP on CentOS
-  hosts: controller_node
-  become: true
-  tasks:
+
     - name: Install NTP
       yum:
         name: ntp
@@ -13,11 +9,7 @@
         name: ntpd
         state: started
         enabled: yes
-
-- name: Install OpenStack packages on CentOS 7
-  hosts: controller_node
-  become: true
-  tasks:
+        
     - name: Install common OpenStack packages
       yum:
         name: "{{ item }}"
@@ -28,11 +20,7 @@
         - rabbitmq-server
         - etcd
         - memcached
-
-- name: Install and configure MariaDB for OpenStack on CentOS 7
-  hosts: controller_node
-  become: true
-  tasks:
+        
     - name: Install MariaDB server
       yum:
         name: mariadb-server
@@ -43,10 +31,7 @@
         name: mariadb
         state: started
         enabled: yes
-
-- name: Install and configure RabbitMQ for OpenStack on CentOS 7
-  hosts: controller_node
-  tasks:
+        
     - name: Install RabbitMQ server
       yum:
         name: rabbitmq-server
@@ -57,11 +42,7 @@
         name: rabbitmq-server
         state: started
         enabled: yes
-
-- name: Install and configure Memcached for OpenStack on CentOS 7
-  hosts: controller_node
-  become: true
-  tasks:
+        
     - name: Install Memcached
       yum:
         name: memcached
@@ -72,11 +53,7 @@
         name: memcached
         state: started
         enabled: yes
-
-- name: Install and configure Etcd for OpenStack on CentOS 7
-  hosts: controller_node
-  become: true
-  tasks:
+        
     - name: Install Etcd
       yum:
         name: etcd
