@@ -55,18 +55,18 @@
         - nova
         - neutron
         - cinder
+
+    - name: Restart MariaDB
+      service:
+        name: mariadb
+        state: restarted
         
     - name: Configure MariaDB
       template:
         src: my.cnf.j2
         dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
       notify: Restart MariaDB
-      
-    - name: Restart MariaDB
-      service:
-        name: mariadb
-        state: restarted
-        
+    
     - name: Install RabbitMQ server
       apt:
         name: rabbitmq-server
@@ -83,32 +83,34 @@
         name: memcached
         state: present
 
+    - name: Restart Memcached
+      service:
+        name: memcached
+        state: restarted
+        
     - name: Configure Memcached
       template:
         src: memcached.conf.j2
         dest: /etc/memcached.conf
       notify: Restart Memcached
       
-    - name: Restart Memcached
-      service:
-        name: memcached
-        state: restarted
-        
     - name: Install Etcd
       apt:
         name: etcd
-        state: present
-
+        state: present  
+    
+    - name: Restart Etcd
+      service:
+        name: etcd
+        state: restarted
+    
     - name: Configure Etcd
       template:
         src: etcd.conf.j2
         dest: /etc/default/etcd
       notify: Restart Etcd
       
-    - name: Restart Etcd
-      service:
-        name: etcd
-        state: restarted
+
 
 
 
