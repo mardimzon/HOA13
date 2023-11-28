@@ -1,5 +1,4 @@
 #controllernode
-
     - name: Install NTP
       yum:
         name: ntp
@@ -10,30 +9,31 @@
         name: ntpd
         state: started
         enabled: yes
-        
+
     - name: Enabling OpenStack Repository
       yum:
         name: centos-release-openstack-train
-        state: latest
+        state: present
+
     - name: Downloading and Installing repository
       yum:
         name: https://rdoproject.org/repos/rdo-release.rpm
         state: present
-      ignore_error: true
+      ignore_errors: true  # Corrected the syntax for ignore_errors
 
     - name: Update Repository
       yum:
         name: '*'
         state: latest
-        update_cache: true
+        update_cache: yes  # Updated to use 'yes' for update_cache
 
     - name: Installing openstack
       yum:
         name:
           - openstack-selinux
           - python-openstackclient
-          -openstack-utils
-        
+          - openstack-utils  # Corrected the syntax for openstack-utils
+
     - name: Install MariaDB server
       yum:
         name: mariadb-server
@@ -44,7 +44,7 @@
         name: mariadb
         state: started
         enabled: yes
-        
+
     - name: Install RabbitMQ server
       yum:
         name: rabbitmq-server
@@ -55,7 +55,7 @@
         name: rabbitmq-server
         state: started
         enabled: yes
-        
+
     - name: Install Memcached
       yum:
         name: memcached
@@ -66,7 +66,7 @@
         name: memcached
         state: started
         enabled: yes
-        
+
     - name: Install Etcd
       yum:
         name: etcd
@@ -77,3 +77,4 @@
         name: etcd
         state: started
         enabled: yes
+
