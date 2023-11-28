@@ -1,10 +1,9 @@
-#controllernode
 ---
 - name: Install and configure NTP on CentOS
   become: true
   tasks:
     - name: Install NTP
-      package:
+      yum:
         name: ntp
         state: present
 
@@ -15,10 +14,10 @@
         enabled: yes
 
 - name: Install OpenStack packages on CentOS 7
-  become: yes
+  become: true
   tasks:
     - name: Install common OpenStack packages
-      package:
+      yum:
         name: "{{ item }}"
         state: present
       loop:
@@ -29,10 +28,10 @@
         - memcached
 
 - name: Install and configure MariaDB for OpenStack on CentOS 7
-  become: yes
+  become: true
   tasks:
     - name: Install MariaDB server
-      package:
+      yum:
         name: mariadb-server
         state: present
 
@@ -45,7 +44,7 @@
 - name: Install and configure RabbitMQ for OpenStack on CentOS 7
   tasks:
     - name: Install RabbitMQ server
-      package:
+      yum:
         name: rabbitmq-server
         state: present
 
@@ -56,10 +55,10 @@
         enabled: yes
 
 - name: Install and configure Memcached for OpenStack on CentOS 7
-  become: yes
+  become: true
   tasks:
     - name: Install Memcached
-      package:
+      yum:
         name: memcached
         state: present
 
@@ -70,10 +69,10 @@
         enabled: yes
 
 - name: Install and configure Etcd for OpenStack on CentOS 7
-  become: yes
+  become: true
   tasks:
     - name: Install Etcd
-      package:
+      yum:
         name: etcd
         state: present
 
