@@ -15,24 +15,9 @@
     package:
       upgrade: dist
       update_cache: yes
-
-- hosts: controller_node 
-  become: true
-  roles:
-    - ntp
-    - ospackages
-    - sql 
-    - messageq 
-    - memcached 
-    - etcd
     
 - hosts: compute_node 
   become: true
   roles:
-    - ntp
-    - ospackages
-    - sql 
-    - messageq 
-    - memcached 
-    - etcd
+    - compute_node
 
