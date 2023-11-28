@@ -100,8 +100,7 @@
         src: etcd.conf.j2
         dest: /etc/default/etcd
       notify: Restart Etcd
-
-  handlers:
+      
     - name: Restart Etcd
       service:
         name: etcd
