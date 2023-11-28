@@ -1,116 +1,122 @@
-#DIMZON_COMPUTE_NODE
+# DIMZON_COMPUTE_NODE
 
-#NTP PLAY#
-    - name: Install and setup NTP
-      apt:
-        name: ntp
-        state: latest
-        
-    - name: Restart NTP
-      service:
-        name: ntp
-        state: restarted
+# NTP PLAY #
+- name: Install and setup NTP
+  apt:
+    name: ntp
+    state: latest
 
-    - name: Configure NTP servers
-      lineinfile:
-        path: /etc/ntp.conf
-        line: "server your-ntp-server"
-      notify: Restart NTP
- #OPENSTACK PLAY#        
-    - name: Install OpenStack required packages
-      apt:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - python3-openstackclient
-        - mariadb-client
-        - rabbitmq-server
-        - etcd
-        - memcached
+- name: Restart NTP
+  service:
+    name: ntp
+    state: restarted
 
-    - name: Add OpenStack repository
-      apt_repository:
-        repo: "deb http://archive.ubuntu.com/ubuntu bionic universe"
-        state: present
-        update_cache: yes
+- name: Configure NTP servers
+  lineinfile:
+    path: /etc/ntp.conf
+    line: "server your-ntp-server"
+  notify: Restart NTP
 
-    - name: Update apt package cache
-      apt:
-        update_cache: yes
- #SQL PLAY#
-     - name: Restart MariaDB
-       service:
-         name: mariadb
-         state: restarted
-        
-    - name: Install MariaDB server
-      apt:
-        name: mariadb-server
-        state: latest
-        
-    - name: Install mysqlclient
-      pip:
-        name: mysqlclient
-        
-    - name: Secure MariaDB installation
-      mysql_db:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - keystone
-        - glance
-        - nova
-        - neutron
-        - cinder
-        
-    - name: Configure MariaDB
-      template:
-        src: my.cnf.j2
-        dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
-      notify: Restart MariaDB
-#MESSAGEQ PLAY#    
-    - name: Install RabbitMQ server
-      apt:
-        name: rabbitmq-server
-        state: present
-        
-    - name: Enable and start RabbitMQ service
-      service:
-        name: rabbitmq-server
-        enabled: yes
-        state: started
-#MEMCACHED PLAY#
-    - name: Restart Memcached
-      service:
-        name: memcached
-        state: restarted
-        
-    - name: Install Memcached
-      apt:
-        name: memcached
-        state: present
-        
-    - name: Configure Memcached
-      template:
-        src: memcached.conf.j2
-        dest: /etc/memcached.conf
-      notify: Restart Memcached
-#ETCD PLAY#
-    - name: Restart Etcd
-      service:
-        name: etcd
-        state: restarted
-      
-    - name: Install Etcd
-      apt:
-        name: etcd
-        state: present  
-        
-    - name: Configure Etcd
-      template:
-        src: etcd.conf.j2
-        dest: /etc/default/etcd
-      notify: Restart Etcd
+# OPENSTACK PLAY #
+- name: Install OpenStack required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-openstackclient
+    - mariadb-client
+    - rabbitmq-server
+    - etcd
+    - memcached
+
+- name: Add OpenStack repository
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu bionic universe"
+    state: present
+    update_cache: yes
+
+- name: Update apt package cache
+  apt:
+    update_cache: yes
+
+# SQL PLAY #
+- name: Restart MariaDB
+  service:
+    name: mariadb
+    state: restarted
+
+- name: Install MariaDB server
+  apt:
+    name: mariadb-server
+    state: latest
+
+- name: Install mysqlclient
+  pip:
+    name: mysqlclient
+
+- name: Secure MariaDB installation
+  mysql_db:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - keystone
+    - glance
+    - nova
+    - neutron
+    - cinder
+
+- name: Configure MariaDB
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
+  notify: Restart MariaDB
+
+# MESSAGEQ PLAY #
+- name: Install RabbitMQ server
+  apt:
+    name: rabbitmq-server
+    state: present
+
+- name: Enable and start RabbitMQ service
+  service:
+    name: rabbitmq-server
+    enabled: yes
+    state: started
+
+# MEMCACHED PLAY #
+- name: Restart Memcached
+  service:
+    name: memcached
+    state: restarted
+
+- name: Install Memcached
+  apt:
+    name: memcached
+    state: present
+
+- name: Configure Memcached
+  template:
+    src: memcached.conf.j2
+    dest: /etc/memcached.conf
+  notify: Restart Memcached
+
+# ETCD PLAY #
+- name: Restart Etcd
+  service:
+    name: etcd
+    state: restarted
+
+- name: Install Etcd
+  apt:
+    name: etcd
+    state: present
+
+- name: Configure Etcd
+  template:
+    src: etcd.conf.j2
+    dest: /etc/default/etcd
+  notify: Restart Etcd
+
       
 
 
