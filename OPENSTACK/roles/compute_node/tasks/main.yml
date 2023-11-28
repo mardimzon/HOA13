@@ -1,1 +1,80 @@
 #computenode
+---
+- name: Configure NTP
+  hosts: all
+  tasks:
+    - name: Install NTP
+      apt:
+        name: ntp
+        state: present
+
+    - name: Configure NTP servers
+      lineinfile:
+        path: /etc/ntp.conf
+        line: "server your-ntp-server"
+      notify: Restart NTP
+
+  handlers:
+    - name: Restart NTP
+      service:
+        name: ntp
+        state: restarted
+
+- name: Install OpenStack packages
+  hosts: all
+  tasks:
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3-openstackclient
+        - mariadb-client
+        - rabbitmq-server
+        - etcd
+        - memcached
+
+    - name: Add OpenStack repository
+      apt_repository:
+        repo: "deb http://archive.ubuntu.com/ubuntu bionic universe"
+        state: present
+        update_cache: yes
+
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        ---
+- name: Install and configure MariaDB for OpenStack
+  hosts: controller
+  tasks:
+    - name: Install MariaDB server
+      apt:
+        name: mariadb-server
+        state: present
+
+    - name: Secure MariaDB installation
+      mysql_db:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - keystone
+        - glance
+        - nova
+        - neutron
+        - cinder
+
+    - name: Configure MariaDB
+      template:
+        src: my.cnf.j2
+        dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
+      notify: Restart MariaDB
+
+  handlers:
+    - name: Restart MariaDB
+      service:
+        name: mariadb
+        state: restarted
+
+        
+  
+
