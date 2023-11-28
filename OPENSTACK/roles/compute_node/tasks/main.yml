@@ -94,7 +94,7 @@
         dest: /etc/memcached.conf
       notify: Restart Memcached
 
-     - name: Restart Etcd
+    - name: Restart Etcd
       service:
         name: etcd
         state: restarted
