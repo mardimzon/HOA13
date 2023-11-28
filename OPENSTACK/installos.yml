@@ -4,18 +4,35 @@
   become: true
   pre_tasks: 
 
-  - name: Updating the repository
-    yum:
-      update_cache: true
+  - name: install updates (CentOS)
+    tags: always
+    package:
+      name: '*'
+      state: latest
+
+  - name: install update (Ubuntu)
+    tags: always
+    package:
+      upgrade: dist
+      update_cache: yes
 
 - hosts: controller_node 
   become: true
   roles:
-    - network
     - ntp
-    - packages
-    - database 
-    - message_queue 
+    - ospackages
+    - sql 
+    - messageq 
+    - memcached 
+    - etcd
+    
+- hosts: compute_node 
+  become: true
+  roles:
+    - ntp
+    - ospackages
+    - sql 
+    - messageq 
     - memcached 
     - etcd
 
