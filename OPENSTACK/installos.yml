@@ -2,19 +2,20 @@
 
 - hosts: all
   become: true
-  pre_tasks: 
+  pre_tasks:
 
-  - name: install updates (CentOS)
-    tags: always
-    package:
+  - name: install updates (Centos)
+    yum:
       name: '*'
-      state: latest
-
-  - name: install update (Ubuntu)
+      update_only: yes
+    when: ansible_distribution == "CentOS"
+   
+  - name: install updates ( Ubuntu )
     tags: always
-    package:
+    apt:
       upgrade: dist
       update_cache: yes
+    when: ansible_distribution == "Ubuntu"
       
 - hosts: compute_node 
   become: true
