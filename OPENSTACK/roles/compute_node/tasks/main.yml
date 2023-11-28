@@ -5,18 +5,18 @@
   apt:
     name: ntp
     state: latest
-
-- name: Restart NTP
-  service:
-    name: ntp
-    state: restarted
-
+    
 - name: Configure NTP servers
   lineinfile:
     path: /etc/ntp.conf
     line: "server your-ntp-server"
   notify: Restart NTP
 
+- name: Restart NTP
+  service:
+    name: ntp
+    state: restarted
+    
 # OPENSTACK PLAY #
 - name: Install OpenStack required packages
   apt:
