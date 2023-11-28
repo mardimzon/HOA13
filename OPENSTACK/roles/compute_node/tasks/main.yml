@@ -45,11 +45,6 @@
     name: mariadb-server
     state: latest
     
-- name: Restart MariaDB
-  service:
-    name: mariadb
-    state: restarted
-
 - name: Install mysqlclient
   pip:
     name: mysqlclient
@@ -69,7 +64,6 @@
   template:
     src: my.cnf.j2
     dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
-  notify: Restart MariaDB
 
 # MESSAGEQ PLAY #
 - name: Install RabbitMQ server
