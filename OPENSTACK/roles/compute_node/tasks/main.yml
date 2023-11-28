@@ -2,19 +2,19 @@
     - name: Install and setup NTP
       apt:
         name: ntp
-        state: present
+        state: latest
+        
+    - name: Restart NTP
+      service:
+        name: ntp
+        state: restarted
 
     - name: Configure NTP servers
       lineinfile:
         path: /etc/ntp.conf
         line: "server your-ntp-server"
       notify: Restart NTP
-      
-    - name: Restart NTP
-      service:
-        name: ntp
-        state: restarted
-        
+          
     - name: Install OpenStack required packages
       apt:
         name: "{{ item }}"
