@@ -19,7 +19,7 @@
       yum:
         name: https://rdoproject.org/repos/rdo-release.rpm
         state: present
-      ignore_errors: true  # Corrected the syntax for ignore_errors
+      ignore_errors: true
 
     - name: Update Repository
       yum:
@@ -32,7 +32,7 @@
         name:
           - openstack-selinux
           - python-openstackclient
-          - openstack-utils  # Corrected the syntax for openstack-utils
+          - openstack-utils
 
     - name: Install MariaDB server
       yum:
