@@ -77,16 +77,16 @@
         name: rabbitmq-server
         enabled: yes
         state: started
-        
-    - name: Install Memcached
-      apt:
-        name: memcached
-        state: present
 
     - name: Restart Memcached
       service:
         name: memcached
         state: restarted
+        
+    - name: Install Memcached
+      apt:
+        name: memcached
+        state: present
         
     - name: Configure Memcached
       template:
