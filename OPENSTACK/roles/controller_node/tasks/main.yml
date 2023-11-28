@@ -11,16 +11,28 @@
         state: started
         enabled: yes
         
-    - name: Install common OpenStack packages
+    - name: Enabling OpenStack Repository
       yum:
-        name: "{{ item }}"
+        name: centos-release-openstack-train
+        state: latest
+    - name: Downloading and Installing repository
+      yum:
+        name: https://rdoproject.org/repos/rdo-release.rpm
         state: present
-      loop:
-        - python3-openstackclient
-        - mariadb-client
-        - rabbitmq-server
-        - etcd
-        - memcached
+      ignore_error: true
+
+    - name: Update Repository
+      yum:
+        name: '*'
+        state: latest
+        update_cache: true
+
+    - Installing openstack
+      yum:
+        name:
+          - openstack-selinux
+          - python-openstackclient
+          -openstack-utils
         
     - name: Install MariaDB server
       yum:
