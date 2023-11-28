@@ -27,7 +27,7 @@
         state: latest
         update_cache: true
 
-    - Installing openstack
+    - name: Installing openstack
       yum:
         name:
           - openstack-selinux
