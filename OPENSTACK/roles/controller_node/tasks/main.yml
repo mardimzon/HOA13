@@ -1,1 +1,85 @@
 #controllernode
+
+---
+- name: Install and configure NTP on CentOS
+  tasks:
+    - name: Install NTP
+      package:
+        name: ntp
+        state: present
+      become: yes
+
+    - name: Start and enable NTP service
+      service:
+        name: ntpd
+        state: started
+        enabled: yes
+      become: yes
+      
+- name: Install OpenStack packages on CentOS 7
+  tasks:
+    - name: Install common OpenStack packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3-openstackclient
+        - mariadb-client
+        - rabbitmq-server
+        - etcd
+        - memcached
+      become: yes
+
+- name: Install and configure MariaDB for OpenStack on CentOS 7
+  tasks:
+    - name: Install MariaDB server
+      package:
+        name: mariadb-server
+        state: present
+      become: yes
+
+    - name: Start and enable MariaDB service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+      become: yes
+      
+- name: Install and configure RabbitMQ for OpenStack on CentOS 7
+  tasks:
+    - name: Install RabbitMQ server
+      package:
+        name: rabbitmq-server
+        state: present
+
+    - name: Start and enable RabbitMQ service
+      service:
+        name: rabbitmq-server
+        state: started
+        enabled: yes
+        
+- name: Install and configure Memcached for OpenStack on CentOS 7
+  tasks:
+    - name: Install Memcached
+      package:
+        name: memcached
+        state: present
+
+    - name: Start and enable Memcached service
+      service:
+        name: memcached
+        state: started
+        enabled: yes
+        
+- name: Install and configure Etcd for OpenStack on CentOS 7
+  tasks:
+    - name: Install Etcd
+      package:
+        name: etcd
+        state: present
+
+    - name: Start and enable Etcd service
+      service:
+        name: etcd
+        state: started
+        enabled: yes
