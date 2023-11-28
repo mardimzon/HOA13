@@ -21,7 +21,6 @@
         state: restarted
 
 - name: Install OpenStack packages
-  hosts: all
   tasks:
     - name: Install required packages
       apt:
@@ -45,7 +44,6 @@
         update_cache: yes
         ---
 - name: Install and configure MariaDB for OpenStack
-  hosts: controller
   tasks:
     - name: Install MariaDB server
       apt:
