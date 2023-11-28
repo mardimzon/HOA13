@@ -18,7 +18,7 @@
     - name: Install OpenStack required packages
       apt:
         name: "{{ item }}"
-        state: latest
+        state: present
       loop:
         - python3-openstackclient
         - mariadb-client
@@ -29,7 +29,7 @@
     - name: Add OpenStack repository
       apt_repository:
         repo: "deb http://archive.ubuntu.com/ubuntu bionic universe"
-        state: latest
+        state: present
         update_cache: yes
 
     - name: Update apt package cache
@@ -44,8 +44,7 @@
     - name: Install mysqlclient
       pip:
         name: mysqlclient
-
-
+        
     - name: Secure MariaDB installation
       mysql_db:
         name: "{{ item }}"
